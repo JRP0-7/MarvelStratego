@@ -12,6 +12,29 @@ public class GestorJugadores implements AlmacenJugadores {
     private String[] historial = new String[200];
     private int cantidadHistorial = 0;
 
+    private int victoriasHeroes =0;
+    private int victoriasVillanos = 0;
+
+
+    public void registrarVictorias(boolean ganoHeroe) {
+        if (ganoHeroe) {
+            victoriasHeroes++;
+        } else {
+            victoriasVillanos++;
+        }
+    }
+
+    public int getVictoriasHeroes() {
+        return victoriasHeroes;
+    }
+
+    public int getVictoriasVillanos() {
+        return victoriasVillanos;
+    }
+
+    public int getPartidasTotales() {
+        return victoriasHeroes + victoriasVillanos;
+    }
 
     public void agregarAlHistorial(String mensaje) {
         if (cantidadHistorial < historial.length) {
@@ -74,14 +97,14 @@ public class GestorJugadores implements AlmacenJugadores {
         Jugador jugador = buscarPorUsuario(usuario);
 
         if (jugador == null) {
-            return null;
+            throw new CredencialesInvalidasException("Usuario o contraseña incorrectos.");
         }
 
-        if (jugador.getContraseña().equals(contraseña) && jugador.isActivo()) {
+        if (jugador.getPassword().equals(contraseña) && jugador.isActivo()) {
             return jugador;
         }
 
-        return null;
+        throw new CredencialesInvalidasException("Usuario o contraseña incorrectos.");
     }
 
     //Creacion del jugador con los campos correspondientes
@@ -111,4 +134,10 @@ public class GestorJugadores implements AlmacenJugadores {
 
         return null;
     }
+
+    public Jugador[] getJugadores() {
+        return jugadores;
+    }
+
+    
 }

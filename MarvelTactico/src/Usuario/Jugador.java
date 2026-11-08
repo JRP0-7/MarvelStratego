@@ -7,7 +7,8 @@ public class Jugador {
     private String contraseña;
     private int puntosV;
     private int puntosH;
-    private int puntosT;
+    private int partidasH;
+    private int partidasV;
     private Date fechaIngreso;
     private boolean activo;
 
@@ -16,8 +17,8 @@ public class Jugador {
         this.contraseña = contraseña;
         this.puntosV = 0;
         this.puntosH = 0;
-        this.puntosT = 0;
-        this.fechaIngreso = new Date();
+        this.partidasH=0;
+        this.partidasV=0;
         this.fechaIngreso = new Date();
         this.activo = true;
     }
@@ -26,7 +27,7 @@ public class Jugador {
         return usuario;
     }
 
-    public String getContraseña() {
+    public String getPassword() {
         return contraseña;
     }
 
@@ -42,16 +43,31 @@ public class Jugador {
         return puntosH;
     }
 
-    public void sumarPuntosH(int cantidad) {
-        this.puntosH += cantidad;
+
+    public int getPartidasH() {
+        return partidasH;
     }
 
-    public void sumarPuntosV(int cantidad){
-        this.puntosV += cantidad;
+    public int getPartidasV() {
+        return partidasV;
     }
 
-    public void calcularTotal(){
-        this.puntosT = this.puntosH + this.puntosV;
+    public void sumarPuntos(boolean Heroe){
+        if(Heroe){
+            puntosH+=3;
+        }else{
+            puntosV+=3;
+        }
+        sumarPartidas(Heroe);
+    }
+
+    public void sumarPartidas(boolean Heroe){
+        if(Heroe){
+            partidasH++;
+        }
+        else{
+            partidasV++;
+        }
     }
 
     public int getTotalPoints(){
