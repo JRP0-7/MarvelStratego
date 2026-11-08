@@ -4,7 +4,7 @@ import Error.ImagenNoLocalizadaException;
 import Game.Combates;
 import Game.Tablero;
 
-public class Tierra extends Piezas {
+public final class Tierra extends Piezas {
     public Tierra(Tablero tablero, int col, int fil, boolean esHeroe) throws ImagenNoLocalizadaException {
         super(tablero);
         this.col = col;

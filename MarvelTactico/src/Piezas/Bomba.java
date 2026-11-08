@@ -4,7 +4,7 @@ import Error.ImagenNoLocalizadaException;
 import Game.Combates;
 import Game.Tablero;
 
-public class Bomba extends Piezas{
+public final class Bomba extends Piezas{
     public Bomba(Tablero tablero, int col, int fil, boolean esHeroe) throws ImagenNoLocalizadaException {
         super(tablero);
         this.col = col;

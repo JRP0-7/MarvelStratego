@@ -5,7 +5,7 @@ import Game.Combates;
 import Game.Tablero;
 
 // El Agente suele perder por su rango, pero puede derrotar al rango 10.
-public class Agente extends Normal {
+public final class Agente extends Normal {
     public Agente(Tablero tablero, int col, int fil, Personaje personaje) throws ImagenNoLocalizadaException {
         super(tablero, col, fil, personaje);
     }
