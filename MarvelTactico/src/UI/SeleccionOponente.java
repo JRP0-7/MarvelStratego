@@ -2,7 +2,6 @@ package UI;
 
 import javax.swing.*;
 
-import Error.ImagenNoLocalizadaException;
 import Game.Tablero;
 import Usuario.GestorJugadores;
 import Usuario.Jugador;
@@ -19,6 +18,7 @@ public class SeleccionOponente extends Fondo {
     Jugador jugadorActual;
 
     JComboBox<String> listaOponentes;
+    JComboBox<String> listaBandos;
     ArrayList<Jugador> oponentesDisponibles;
 
     public SeleccionOponente(JFrame marco, GestorJugadores gestor, Jugador jugadorActual) {
@@ -43,7 +43,7 @@ public class SeleccionOponente extends Fondo {
         oponentesDisponibles = buscarOponentes();
 
         if (oponentesDisponibles.isEmpty()) {
-            JLabel labelSinOponentes = new JLabel("No hay otros jugadores registrados todavia.");
+            JLabel labelSinOponentes = new JLabel("No hay otros jugadores registrados todavía.");
             labelSinOponentes.setForeground(Color.yellow);
             labelSinOponentes.setAlignmentX(Component.CENTER_ALIGNMENT);
             panelCentro.add(labelSinOponentes);
@@ -59,6 +59,18 @@ public class SeleccionOponente extends Fondo {
             listaOponentes.setMaximumSize(new Dimension(200, 30));
             listaOponentes.setAlignmentX(Component.CENTER_ALIGNMENT);
             panelCentro.add(listaOponentes);
+            panelCentro.add(Box.createRigidArea(new Dimension(0, 20)));
+
+
+            JLabel labelBando = new JLabel("Tu bando:");
+            labelBando.setForeground(Color.white);
+            labelBando.setAlignmentX(Component.CENTER_ALIGNMENT);
+            panelCentro.add(labelBando);
+
+            listaBandos = new JComboBox<String>(new String[] { "Héroes", "Villanos" });
+            listaBandos.setMaximumSize(new Dimension(200, 30));
+            listaBandos.setAlignmentX(Component.CENTER_ALIGNMENT);
+            panelCentro.add(listaBandos);
             panelCentro.add(Box.createRigidArea(new Dimension(0, 20)));
 
             JButton botonIniciar = new JButton("Iniciar partida");
@@ -84,7 +96,7 @@ public class SeleccionOponente extends Fondo {
         this.add(panelCentro);
     }
 
-    // Todos los jugadores activos, menos el que tiene la sesion iniciada.
+    // Todos los jugadores activos, menos el que tiene la sesión iniciada.
     private ArrayList<Jugador> buscarOponentes() {
         ArrayList<Jugador> lista = new ArrayList<Jugador>();
         Jugador[] todos = gestor.obtenerJugadores();
@@ -104,9 +116,16 @@ public class SeleccionOponente extends Fondo {
         Jugador oponente = oponentesDisponibles.get(indiceElegido);
 
         Tablero tablero = new Tablero();
-        tablero.setJugadorHeroe(jugadorActual);
-        tablero.setJugadorVillano(oponente);
+
+        if(listaBandos.getSelectedIndex()==0){
+            tablero.setJugadorHeroe(jugadorActual);
+            tablero.setJugadorVillano(oponente);
+        }else{
+            tablero.setJugadorHeroe(oponente);
+            tablero.setJugadorVillano(jugadorActual);
+        }
         tablero.gestor = gestor;
+        tablero.jugadorActual = jugadorActual;
 
         PanelInfo panelInfo = new PanelInfo(tablero);
 

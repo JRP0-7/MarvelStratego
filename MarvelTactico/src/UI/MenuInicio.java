@@ -60,17 +60,17 @@ public class MenuInicio extends Fondo {
         labelUsuario.setForeground(Color.white);
         labelUsuario.setFont(new Font("Arial", Font.PLAIN, 18));
         labelUsuario.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
+
         campoUsuario = new JTextField(15);
         campoUsuario.setMaximumSize(new Dimension(300, 50));
         campoUsuario.setAlignmentX(Component.CENTER_ALIGNMENT);
-        
+
         JLabel labelContraseña = new JLabel("Contraseña (5 caracteres):");
         labelContraseña.setForeground(Color.white);
         labelContraseña.setFont(new Font("Arial", Font.PLAIN, 18));
         labelContraseña.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Fila con el campo de contraseña y el boton del ojo al lado
+        // Fila con el campo de contraseña y el botón del ojo al lado
         JPanel filaContraseña = new JPanel();
         filaContraseña.setOpaque(false);
         filaContraseña.setLayout(new BoxLayout(filaContraseña, BoxLayout.X_AXIS));
@@ -81,12 +81,11 @@ public class MenuInicio extends Fondo {
 
         btnVerContra = new JButton(ojoCerrado);
         btnVerContra.addActionListener(e -> {
-            if(contraVisible){
+            if (!contraVisible) {
                 contraVisible = !contraVisible;
                 campoContraseña.setEchoChar((char) 0);
                 btnVerContra.setIcon(ojoAbierto);
-            }
-            else{
+            } else {
                 contraVisible = !contraVisible;
                 campoContraseña.setEchoChar('•');
                 btnVerContra.setIcon(ojoCerrado);
@@ -96,17 +95,16 @@ public class MenuInicio extends Fondo {
         filaContraseña.add(Box.createRigidArea(new Dimension(5, 0)));
         filaContraseña.add(btnVerContra);
 
-
         labelMensaje = new JLabel(" ");
         labelMensaje.setForeground(Color.red);
         labelMensaje.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JButton botonIniciarSesion = new JButton("Iniciar sesion");
+        JButton botonIniciarSesion = new JButton("Iniciar sesión");
         botonIniciarSesion.setFont(new Font("Arial", Font.PLAIN, 18));
         botonIniciarSesion.setAlignmentX(Component.CENTER_ALIGNMENT);
         botonIniciarSesion.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                iniciarSesion(); // se llama la funcion de iniciar sesion
+                iniciarSesion(); // se llama a la función de iniciar sesión
             }
         });
 
@@ -116,7 +114,7 @@ public class MenuInicio extends Fondo {
         botonCrearJugador.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 crearJugador();
-                // se llama la funcion de crear jugador
+                // se llama a la función de crear jugador
             }
         });
 
@@ -152,29 +150,25 @@ public class MenuInicio extends Fondo {
 
     JFrame marco;
 
-    // Funcion de iniciar sesion dentro del menu de inicio
+    // Función para iniciar sesión dentro del menú de inicio
     private void iniciarSesion() {
-        String usuario = campoUsuario.getText();
-        String contraseña = new String(campoContraseña.getPassword());
+        String usuario = campoUsuario.getText().trim();
+        String contraseña = new String(campoContraseña.getPassword()).trim();
 
         try {
-        Jugador jugador = gestor.iniciarSesion(usuario, contraseña);
+            Jugador jugador = gestor.iniciarSesion(usuario, contraseña);
 
-            if (jugador == null) {
-                labelMensaje.setText("Usuario o contraseña incorrectos.");
-            } else {
-                labelMensaje.setText(" ");
-                abrirMenuPrincipal(jugador); // se llama la funcion de abrir el menu con los datos del jugador
-            }
+            labelMensaje.setText(" ");
+            abrirMenuPrincipal(jugador); // se llama a la función de abrir el menú con los datos del jugador
         } catch (CredencialesInvalidasException e) {
             labelMensaje.setText(e.getMessage());
         }
     }
 
-    // Funcion de crear jugador nuevo dentro del menu de inicio
+    // Función para crear un jugador nuevo dentro del menú de inicio
     private void crearJugador() {
-        String usuario = campoUsuario.getText();
-        String contraseña = new String(campoContraseña.getPassword());
+        String usuario = campoUsuario.getText().trim();
+        String contraseña = new String(campoContraseña.getPassword()).trim();
 
         try {
             String error = gestor.crearJugador(usuario, contraseña);
@@ -191,7 +185,7 @@ public class MenuInicio extends Fondo {
         }
     }
 
-    // Funcion que abre el menu principal del juego
+    // Función que abre el menú principal del juego
     private void abrirMenuPrincipal(Jugador jugador) {
         MenuPrincipal menuPrincipal = new MenuPrincipal(marco, gestor, jugador);
 
