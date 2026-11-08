@@ -1,11 +1,7 @@
 package core;
 
 import java.awt.event.MouseEvent;
-import java.awt.Frame;
-import java.awt.Window;
 import java.awt.event.MouseAdapter;
-
-import javax.swing.SwingUtilities;
 
 import Game.Tablero;
 import Piezas.Piezas;
