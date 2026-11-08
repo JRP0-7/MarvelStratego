@@ -1,6 +1,7 @@
 package Piezas;
 
 import Error.ImagenNoLocalizadaException;
+import Game.Combates;
 import Game.Tablero;
 
 // El Agente suele perder por su rango, pero puede derrotar al rango 10.
@@ -9,10 +10,11 @@ public class Agente extends Normal {
         super(tablero, col, fil, personaje);
     }
 
-    public boolean vence(Piezas defensor) {
-        if (defensor.getRango() == 10) {
-            return true;
+    @Override
+    public Combates combate(Piezas defensor) {
+        if(defensor.getRango()==10){
+            return Combates.GANA;
         }
-        return super.vence(defensor);
+        return super.combate(defensor);
     }
 }

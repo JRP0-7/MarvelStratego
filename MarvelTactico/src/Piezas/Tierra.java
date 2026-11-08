@@ -1,6 +1,7 @@
 package Piezas;
 
 import Error.ImagenNoLocalizadaException;
+import Game.Combates;
 import Game.Tablero;
 
 public class Tierra extends Piezas {
@@ -14,7 +15,7 @@ public class Tierra extends Piezas {
         this.xPos = tablero.pxX(col);
         this.yPos = tablero.pxY(fil);
 
-        // Cada bando usa su propia imagen de Tierra.
+        // Archivo de imagen
         if (esHeroe) {
             this.nombre = "tierra_heroes";
         } else {
@@ -23,11 +24,23 @@ public class Tierra extends Piezas {
         cargarImagenes(this.nombre);
     }
 
+    @Override
     public boolean esMovimientoValido(int col, int fil) {
         return false;
     }
 
+    @Override
     public boolean chocaPieza(int col, int fil) {
         return false;
+    }
+
+    @Override
+    public boolean seRevela(int ncol, int nFil) {
+        return false;
+    }
+
+    @Override
+    public Combates combate(Piezas defensor) {
+        return Combates.PIERDE;
     }
 }

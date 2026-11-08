@@ -3,20 +3,21 @@ package Piezas;
 import javax.imageio.ImageIO;
 
 import Error.ImagenNoLocalizadaException;
+import Game.Combates;
 import Game.Tablero;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
-public abstract class Piezas {
+public abstract class Piezas implements Movable{
     public int col, fil;
     public int xPos, yPos;
 
     public boolean esHeroe;
     protected String nombre;
     protected String alias;
-    protected int rango; // Los rangos van del 1 al 10; -1 identifica una bomba y -2, tierra.
+    protected int rango; // 1-10. -1 = Bomba, -2 = Tierra
     protected BufferedImage imagen;
     public boolean visible= false;
     Tablero tablero;
@@ -32,7 +33,7 @@ public abstract class Piezas {
         this.yPos = yPos;
     }
 
-    // Copia de Personaje los datos que esta pieza necesita y carga su imagen.
+    // Toma del personaje el bando, el rango, el alias y la imagen
     protected void asignarPersonaje(Personaje personaje) throws ImagenNoLocalizadaException {
         this.esHeroe = personaje.esHeroe();
         this.rango = personaje.getRango();
@@ -55,23 +56,13 @@ public abstract class Piezas {
         }
     }
 
-    public abstract boolean esMovimientoValido(int col, int fil);
-
-    public abstract boolean chocaPieza(int col, int fil);
-
-    // Decide si esta pieza vence al defensor; si empatan, ambas se eliminan.
-    public boolean vence(Piezas defensor) {
-        if (defensor.getRango() == -2) {
-            return true; // Cualquier pieza vence a Tierra.
-        }
-        if (defensor.getRango() == -1) {
-            return false; // La bomba vence a las piezas que no sean Scout.
-        }
-        return this.rango >= defensor.getRango();
-    }
+    // Dice si esta pieza gana al atacar al defensor. En empate mueren las dos
+    // piezas
+    public abstract boolean seRevela(int ncol, int nFil);
+    public abstract Combates combate(Piezas defensor);
 
     public void paint(Graphics2D g2d) {
-        // Dejamos un margen para centrar la pieza dentro de la casilla.
+        // Calculamos un tamaño que quepa en la celda (tCasillas es 72)
         int size = tablero.tCasillas - 10;
         int offset = (tablero.tCasillas - size) / 2;
 
@@ -84,10 +75,10 @@ public abstract class Piezas {
         }
 
         if (imagen != null) {
-            // La imagen ocupa el espacio disponible dentro de la casilla.
+            // Dibujamos la imagen centrada y escalada al tamaño de la celda
             g2d.drawImage(imagen, xPos + offset, yPos + offset, size, size, null);
         } else {
-            // Si falta la imagen, mostramos un cuadro con el rango de la pieza.
+            // FALLBACK VISUAL: Cuadro centrado
             g2d.setColor(esHeroe ? new Color(0, 0, 255, 100) : new Color(255, 0, 0, 100));
             g2d.fillRect(xPos + offset, yPos + offset, size, size);
             g2d.setColor(Color.WHITE);

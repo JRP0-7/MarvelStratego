@@ -3,10 +3,11 @@ package Piezas;
 import java.util.ArrayList;
 import java.util.List;
 
-// Aquí están los personajes, sus rangos y sus imágenes, según la figura 2 del enunciado.
-// El campo "archivo" guarda el nombre de la imagen en resources/personajes.
+// Tabla oficial de personajes segun la Figura 2 del enunciado (33 moviles por bando).
+// "archivo" es el nombre real de la imagen en resources/personajes (los nombres de
+// archivo no coinciden con el rango/bando, por eso se mapean aqui uno por uno).
 public enum Personaje {
-    // Héroes
+    // HEROES
     MR_FANTASTIC(true, 10, "Mr. Fantastic", "V_R2_6"),
     CAPTAIN_AMERICA(true, 9, "Captain America", "V_R2_5"),
     PROFESSOR_X(true, 8, "Professor X", "V_R2_4"),
@@ -41,7 +42,7 @@ public enum Personaje {
     NIGHTCRAWLER(true, 2, "Nightcrawler", "V_R9_1"),
     BLACK_WIDOW_H(true, 1, "Black Widow", "V_R10_1"),
 
-    // Villanos
+    // VILLANOS
     DR_DOOM(false, 10, "Dr. Doom", "H_R2_6"),
     GALACTUS(false, 9, "Galactus", "H_R2_5"),
     MAGNETO(false, 8, "Magneto", "H_R2_4"),

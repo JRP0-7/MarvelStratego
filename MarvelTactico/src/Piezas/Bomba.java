@@ -1,6 +1,7 @@
 package Piezas;
 
 import Error.ImagenNoLocalizadaException;
+import Game.Combates;
 import Game.Tablero;
 
 public class Bomba extends Piezas{
@@ -13,7 +14,7 @@ public class Bomba extends Piezas{
         this.xPos = tablero.pxX(col);
         this.yPos = tablero.pxY(fil);
 
-        // El alias se muestra en el juego y el nombre identifica su imagen.
+        // Nombre de la pieza en el juego y archivo de imagen
         if (esHeroe) {
             this.alias = "Nova Blast";
             this.nombre = "bomba_nova";
@@ -24,11 +25,23 @@ public class Bomba extends Piezas{
         cargarImagenes(this.nombre);
     }
 
-    public boolean esMovimientoValido(int col, int fil) {
+    @Override
+    public boolean esMovimientoValido(int x, int y) {
         return false;
     }
 
+    @Override
     public boolean chocaPieza(int col, int fil) {
         return false;
+    }
+
+    @Override
+    public boolean seRevela(int ncol, int nFil) {
+        return false;
+    }
+
+    @Override
+    public Combates combate(Piezas defensor) {
+        return Combates.PIERDE;
     }
 }

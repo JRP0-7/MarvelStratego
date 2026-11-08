@@ -1,6 +1,7 @@
 package Piezas;
 
 import Error.ImagenNoLocalizadaException;
+import Game.Combates;
 import Game.Tablero;
 
 // El Scout es la única pieza que puede vencer a una bomba.
@@ -9,10 +10,13 @@ public class Scout extends Normal {
         super(tablero, col, fil, personaje);
     }
 
-    public boolean vence(Piezas defensor) {
-        if (defensor.getRango() == -1) {
-            return true;
+
+    @Override
+    public Combates combate(Piezas defensor) {
+        if(defensor.getRango()==-1){
+            return Combates.GANA;
         }
-        return super.vence(defensor);
+        return super.combate(defensor);
     }
+
 }
