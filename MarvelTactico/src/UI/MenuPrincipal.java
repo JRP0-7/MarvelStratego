@@ -38,14 +38,14 @@ public class MenuPrincipal extends Fondo {
                 BorderFactory.createEmptyBorder(20, 20, 20, 20)));
         panelCentro.setLayout(new BoxLayout(panelCentro, BoxLayout.Y_AXIS));
 
-        JLabel titulo = new JLabel("Menu Principal");
+        JLabel titulo = new JLabel("Menú principal");
         titulo.setForeground(Color.white);
         titulo.setFont(new Font("Arial", Font.BOLD, 50));
         titulo.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel labelBienvenida = new JLabel("Bienvenido, " + jugadorActual.getUsuario());
         labelBienvenida.setForeground(Color.white);
-        labelBienvenida.setFont(new Font("Aria", Font.BOLD, 25));
+        labelBienvenida.setFont(new Font("Arial", Font.BOLD, 25));
         labelBienvenida.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JButton botonJugar = new JButton("Partida nueva");
@@ -66,7 +66,16 @@ public class MenuPrincipal extends Fondo {
             }
         });
 
-        JButton botonCerrarSesion = new JButton("Cerrar sesion");
+        JButton botonReportes = new JButton("UNIVERSO MARVEL");
+        botonReportes.setFont(new Font("Arial", Font.PLAIN, 18));
+        botonReportes.setAlignmentX(Component.CENTER_ALIGNMENT);
+        botonReportes.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                abrirReportes();
+            }
+        });
+
+        JButton botonCerrarSesion = new JButton("Cerrar sesión");
         botonCerrarSesion.setFont(new Font("Arial", Font.PLAIN, 18));
         botonCerrarSesion.setAlignmentX(Component.CENTER_ALIGNMENT);
         botonCerrarSesion.addActionListener(new ActionListener() {
@@ -82,6 +91,8 @@ public class MenuPrincipal extends Fondo {
         panelCentro.add(botonJugar);
         panelCentro.add(Box.createRigidArea(new Dimension(0, 10)));
         panelCentro.add(botonMiCuenta);
+        panelCentro.add(Box.createRigidArea(new Dimension(0, 10)));
+        panelCentro.add(botonReportes);
         panelCentro.add(Box.createRigidArea(new Dimension(0, 10)));
         panelCentro.add(botonCerrarSesion);
 
@@ -111,14 +122,29 @@ public class MenuPrincipal extends Fondo {
         marco.repaint();
     }
 
-    private void cerrarSesion() {
-        MenuInicio menuInicio = new MenuInicio(marco, gestor);
+    private void abrirReportes() {
+        SelectorRepo reportes = new SelectorRepo(marco, jugadorActual, gestor);
 
         marco.getContentPane().removeAll();
         marco.setLayout(new BorderLayout());
-        marco.add(menuInicio, BorderLayout.CENTER);
+        marco.add(reportes, BorderLayout.CENTER);
 
         marco.revalidate();
         marco.repaint();
+    }
+
+    private void cerrarSesion() {
+        int respuesta = JOptionPane.showConfirmDialog(this, "¿Desea cerrar su sesión actual?", "Cerrar sesión", JOptionPane.YES_NO_OPTION);
+        if(respuesta==JOptionPane.YES_OPTION){
+            MenuInicio menuInicio = new MenuInicio(marco, gestor);
+    
+            marco.getContentPane().removeAll();
+            marco.setLayout(new BorderLayout());
+            marco.add(menuInicio, BorderLayout.CENTER);
+    
+            marco.revalidate();
+            marco.repaint();
+        }
+
     }
 }
