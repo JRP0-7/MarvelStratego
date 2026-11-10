@@ -2,9 +2,12 @@ package Usuario;
 
 import java.util.Date;
 
+// Representa a un jugador dentro del sistema del juego.
+
+
 public class Jugador {
     private String usuario;
-    private String contraseña;
+    private String password;
     private int puntosV;
     private int puntosH;
     private int partidasH;
@@ -12,9 +15,9 @@ public class Jugador {
     private Date fechaIngreso;
     private boolean activo;
 
-    public Jugador(String usuario, String contraseña) {
+    public Jugador(String usuario, String password) {
         this.usuario = usuario;
-        this.contraseña = contraseña;
+        this.password = password;
         this.puntosV = 0;
         this.puntosH = 0;
         this.partidasH=0;
@@ -28,11 +31,11 @@ public class Jugador {
     }
 
     public String getPassword() {
-        return contraseña;
+        return password;
     }
 
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public int getPuntosV() {

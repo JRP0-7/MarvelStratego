@@ -10,6 +10,9 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
+// Clase base abstracta que comparte todas las piezas del tablero.
+
+
 public abstract class Piezas implements Movable{
     public int col, fil;
     public int xPos, yPos;
@@ -56,9 +59,10 @@ public abstract class Piezas implements Movable{
         }
     }
 
-    // Dice si esta pieza gana al atacar al defensor. En empate mueren las dos
-    // piezas
+    // Dice si, al moverse a esa casilla, la pieza queda revelada al oponente.
     public abstract boolean seRevela(int ncol, int nFil);
+
+    // Resultado de atacar al defensor: GANA, PIERDE o EMPATA (en empate mueren las dos piezas).
     public abstract Combates combate(Piezas defensor);
 
     public void paint(Graphics2D g2d) {

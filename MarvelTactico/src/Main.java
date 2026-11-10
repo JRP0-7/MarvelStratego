@@ -3,6 +3,9 @@ import javax.swing.SwingUtilities;
 
 import UI.MenuInicio;
 
+// Punto de entrada principal de la aplicación y arranque del juego.
+
+
 public class Main {
     public static void main(String[] args){
         SwingUtilities.invokeLater(new Runnable() {

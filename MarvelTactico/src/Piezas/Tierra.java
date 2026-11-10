@@ -4,6 +4,9 @@ import Error.ImagenNoLocalizadaException;
 import Game.Combates;
 import Game.Tablero;
 
+// Representa la tierra, objetivo principal del bando.
+
+
 public final class Tierra extends Piezas {
     public Tierra(Tablero tablero, int col, int fil, boolean esHeroe) throws ImagenNoLocalizadaException {
         super(tablero);

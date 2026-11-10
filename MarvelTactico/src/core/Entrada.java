@@ -8,6 +8,13 @@ import Piezas.Piezas;
 
 
 
+// Maneja eventos del mouse para seleccionar y mover piezas en el tablero.
+
+
+
+
+
+
 public class Entrada extends MouseAdapter {
     Tablero tablero;
 

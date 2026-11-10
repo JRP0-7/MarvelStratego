@@ -21,6 +21,9 @@ import javax.swing.JPanel;
 import Usuario.GestorJugadores;
 import Usuario.Jugador;
 
+// Selector que permite elegir o cargar el repositorio o perfil asociado.
+
+
 public class SelectorRepo extends Fondo {
     JFrame marco;
     Jugador jugadorActual;
@@ -55,16 +58,14 @@ public class SelectorRepo extends Fondo {
         titulo.setFont(new Font("Arial", Font.BOLD, 50));
         titulo.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JButton botonVerBatallas = new JButton("Batallas");
-        botonVerBatallas.setFont(new Font("Arial", Font.PLAIN, 18));
+        JButton botonVerBatallas = new ButtonDesign("Batallas");
         botonVerBatallas.setAlignmentX(Component.CENTER_ALIGNMENT);
         botonVerBatallas.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 abrirReportes("batallas");
             }
         });
-        JButton botonVerRanking = new JButton("Ranking de jugadores");
-        botonVerRanking.setFont(new Font("Arial", Font.PLAIN, 18));
+        JButton botonVerRanking = new ButtonDesign("Ranking de jugadores");
         botonVerRanking.setAlignmentX(Component.CENTER_ALIGNMENT);
         botonVerRanking.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -72,8 +73,7 @@ public class SelectorRepo extends Fondo {
             }
         });
 
-        JButton botonVolver = new JButton("Volver");
-        botonVolver.setFont(new Font("Arial", Font.PLAIN, 18));
+        JButton botonVolver = new ButtonDesign("Volver");
         botonVolver.setAlignmentX(Component.CENTER_ALIGNMENT);
         botonVolver.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

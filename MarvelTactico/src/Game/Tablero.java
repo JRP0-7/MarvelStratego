@@ -19,6 +19,9 @@ import Usuario.Jugador;
 import core.Entrada;
 import core.Mover;
 
+// Representa el tablero de juego, sus piezas y la lógica de turnos.
+
+
 public class Tablero extends JPanel {
     public int tCasillas = 72;
     public static final int margen = 48;
@@ -52,6 +55,7 @@ public class Tablero extends JPanel {
     public Jugador jugadorActual;
     public GestorJugadores gestor; // Variable para sumarle puntos al jugador ganador
 
+    // Devuelve el nombre del equipo para mostrar mensajes o resultados en pantalla.
     public String nombreDe(boolean esHeroe) {
         if (esHeroe) {
             if (jugadorHeroe != null) {
@@ -66,11 +70,14 @@ public class Tablero extends JPanel {
         }
     }
 
+    // Entrada de mouse para manejar clics, arrastres y selección de piezas.
     Entrada entra = new Entrada(this);
+
+    // Imagen del fondo del tablero, redimensionada para cubrir todo el panel.
     Image fondoTablero = Fondo.icono("tablero2.jpeg", col * tCasillas + 2 * margen, fil * tCasillas + 2 * margen)
             .getImage();
 
-    // Conversiones entre casillas y pixeles
+    // Conversiones entre casillas y pixeles para ubicar piezas y dibujar en pantalla.
     public int pxX(int c) {
         return margen + c * tCasillas;
     }
@@ -87,10 +94,12 @@ public class Tablero extends JPanel {
         return (y - margen) / tCasillas;
     }
 
+    // Verifica si una coordenada corresponde a una casilla válida dentro del tablero.
     public boolean esCelda(int c, int f) {
         return c >= 0 && c < col && f >= 0 && f < fil;
     }
 
+    // Inicializa el tablero, crea la disposición inicial y conecta el control del mouse.
     public Tablero() {
         this.setPreferredSize(new Dimension(col * tCasillas + 2 * margen, fil * tCasillas + 2 * margen));
         crearZona();
@@ -102,6 +111,7 @@ public class Tablero extends JPanel {
         ToolTipManager.sharedInstance().registerComponent(this);
     }
 
+    // Muestra el alias de la pieza bajo el cursor cuando la pieza es visible para el jugador.
     @Override
     public String getToolTipText(MouseEvent event) {
         int columnaM = colDe(event.getX());
@@ -111,7 +121,7 @@ public class Tablero extends JPanel {
             return null;
         }
         Piezas piezaBajoMouse = getPieza(columnaM, filaM);
-        
+
         if (piezaBajoMouse == null) {
             return null;
         }
@@ -123,7 +133,8 @@ public class Tablero extends JPanel {
         return "<html>" + piezaBajoMouse.getAlias() + "</html>";
     }
 
-    // Valida si es movimiento valido de pieza
+    // Valida si es movimiento valido de pieza, teniendo en cuenta equipo, zona prohibida,
+    // reglas de movimiento, colisiones y casillas ocupadas.
     public boolean esMovimientoValido(Mover mov) {
         if (mismoEquipo(mov.getPieza(), mov.getCaptura())) {
             return false;
@@ -353,31 +364,36 @@ public class Tablero extends JPanel {
         }
     }
 
+    // Crea las dos zonas centrales prohibidas del tablero para que no puedan
+    // colocarse piezas ni cruzarse en esas casillas durante la partida.
     private void crearZona() {
         marcarZona(2, 4);
         marcarZona(6, 4);
     }
 
+    // Devuelve true si la celda indicada queda dentro de una zona bloqueada.
     public boolean esZonaProhibida(int c, int f) {
         return zonasProhibidas[f][c];
     }
 
-    // Villanos en filas 0-3 y heroes en filas 6-9, 40 piezas por bando
+    // Genera la disposición inicial de todas las piezas del juego,
+    // dejando a los villanos en la parte inferior y a los heroes en la superior.
     public void generarPiezas() {
         piezasJuego.clear();
         colocarBando(false);
         colocarBando(true);
     }
 
+    // Coloca aleatoriamente todas las piezas de un bando dentro de su sector del tablero.
     private void colocarBando(boolean esHeroe) {
         Random rnd = new Random();
 
-        // Fila del fondo, fila del frente y hacia donde se avanza desde el fondo
+        // Fila del fondo, fila del frente y sentido de avance del bando.
         int fondo = esHeroe ? 9 : 0;
         int frente = esHeroe ? 6 : 3;
         int haciaFrente = esHeroe ? -1 : 1;
 
-        // Casillas que ocupa este bando
+        // Casillas candidatas para ubicar esta formación antes de distribuir piezas.
         ArrayList<Point> celdas = new ArrayList<>();
         for (int f = Math.min(fondo, frente); f <= Math.max(fondo, frente); f++) {
             for (int c = 0; c < col; c++) {
@@ -385,7 +401,8 @@ public class Tablero extends JPanel {
             }
         }
 
-        // La Tierra va en la ultima fila (no en columna 0 ni 9) con 3 bombas alrededor
+        // La Tierra va en la fila de fondo (sin tocar los extremos) y lleva
+        // tres bombas alrededor para crear la defensa del campamento.
         int colTierra = 1 + rnd.nextInt(col - 2);
         agregarPieza(colTierra, fondo, esHeroe, -2);
         agregarPieza(colTierra - 1, fondo, esHeroe, -1);
@@ -396,7 +413,7 @@ public class Tablero extends JPanel {
         celdas.remove(new Point(colTierra + 1, fondo));
         celdas.remove(new Point(colTierra, fondo + haciaFrente));
 
-        // Las 3 bombas restantes van en las ultimas 2 filas
+        // Las 3 bombas restantes se reparten en las dos filas del fondo.
         ArrayList<Point> opcionesBomba = new ArrayList<>();
         for (Point p : celdas) {
             if (p.y == fondo || p.y == fondo + haciaFrente) {
@@ -410,6 +427,8 @@ public class Tablero extends JPanel {
             opcionesBomba.remove(p);
         }
 
+        // Se separan los personajes de rango 2 de los restantes para ubicarlos
+        // primero en posiciones estratégicas.
         ArrayList<Personaje> rango2 = new ArrayList<>();
         ArrayList<Personaje> resto = new ArrayList<>();
         for (Personaje pj : Personaje.deBando(esHeroe)) {
@@ -420,7 +439,7 @@ public class Tablero extends JPanel {
             }
         }
 
-        // Los de Rango 2 van en las 2 filas del frente
+        // Los personajes de rango 2 se ubican en las dos filas delanteras.
         ArrayList<Point> opcionesR2 = new ArrayList<>();
         for (Point p : celdas) {
             if (p.y == frente || p.y == frente - haciaFrente) {
@@ -435,8 +454,8 @@ public class Tablero extends JPanel {
             opcionesR2.remove(p);
         }
 
-        // Primero se llena la fila del frente y luego se rellena con las piezas
-        // sobrantes
+        // El resto de las piezas se distribuye primero en la fila del frente,
+        // y luego en cualquiera de las posiciones restantes.
         while (!celdas.isEmpty() && !resto.isEmpty()) {
             ArrayList<Point> opciones = new ArrayList<>();
             for (Point p : celdas) {
@@ -454,7 +473,7 @@ public class Tablero extends JPanel {
         }
     }
 
-    // Agrega una bomba (-1) o la tierra (-2)
+    // Agrega una bomba (-1) o la tierra (-2) al tablero y la deja lista para pintarse.
     private void agregarPieza(int c, int f, boolean esHeroe, int rango) {
         try {
             Piezas p;
@@ -466,11 +485,12 @@ public class Tablero extends JPanel {
             p.setPos(c, f, pxX(c), pxY(f));
             piezasJuego.add(p);
         } catch (ImagenNoLocalizadaException e) {
+            // Se muestra el error con este panel como contenedor de la ventana emergente.
             JOptionPane.showMessageDialog(this, e.getMessage(), "Imagen no encontrada", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    // Agrega un personaje con la clase que le corresponde segun su rango
+    // Agrega un personaje con la subclase que corresponda según su rango y estilo.
     private void agregarPieza(int c, int f, Personaje pj) {
         try {
             Piezas p;
@@ -486,20 +506,24 @@ public class Tablero extends JPanel {
             p.setPos(c, f, pxX(c), pxY(f));
             piezasJuego.add(p);
         } catch (ImagenNoLocalizadaException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Imagen no encontrada", JOptionPane.ERROR_MESSAGE);        }
+            // La referencia a `this` indica que el cuadro de error se ancla al tablero.
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Imagen no encontrada", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
+    // Redibuja el tablero completo cada vez que cambia el estado del juego,
+    // mostrando fondo, grilla, piezas y movimientos posibles del turno actual.
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        // Fondo escalado al panel entero
+        // Fondo escalado al panel entero.
         if (fondoTablero != null) {
             g2d.drawImage(fondoTablero, 0, 0, getWidth(), getHeight(), null);
         }
 
-        // Grilla de juego
+        // Dibuja la grilla que separa cada casilla del tablero.
         g2d.setColor(new Color(60, 60, 60));
         g2d.setStroke(new BasicStroke(2));
         for (int i = 0; i <= col; i++) {
@@ -509,7 +533,7 @@ public class Tablero extends JPanel {
             g2d.drawLine(pxX(0), pxY(j), pxX(col), pxY(j));
         }
 
-        // Zonas prohibidas (sombra roja)
+        // Pinta las zonas restringidas con un sombreado rojo semitransparente.
         g2d.setColor(new Color(200, 50, 50, 100));
         for (int f = 0; f < fil; f++) {
             for (int c = 0; c < col; c++) {
@@ -519,20 +543,20 @@ public class Tablero extends JPanel {
             }
         }
 
-        // Dibujar las piezas que esten en el tablero
+        // Dibuja cada pieza que sigue activa dentro del tablero.
         for (Piezas p : piezasJuego) {
             if (p != null) {
                 p.paint(g2d);
             }
         }
 
-        // Rellenar la casilla de la pieza seleccionada
+        // Resalta la casilla donde se encuentra la pieza seleccionada.
         if (piezaElegida != null) {
             g2d.setColor(new Color(230, 190, 30, 110));
             g2d.fillRect(pxX(piezaElegida.getCol()) + 2, pxY(piezaElegida.getFil()) + 2, tCasillas - 4, tCasillas - 4);
         }
 
-        // Dibujar con borde las casillas a las que se puede mover o atacar
+        // Marca, con borde verde o rojo, las casillas disponibles para moverse o atacar.
         if (piezaElegida != null) {
             g2d.setStroke(new BasicStroke(4));
             for (int f = 0; f < fil; f++) {
@@ -553,17 +577,6 @@ public class Tablero extends JPanel {
         }
     }
 
-    public int getFil() {
-        return this.fil;
-    }
-
-    public Jugador getJugadorHeroe() {
-        return jugadorHeroe;
-    }
-
-    public Jugador getJugadorVillano() {
-        return jugadorVillano;
-    }
 
     public void setJugadorHeroe(Jugador j) {
         this.jugadorHeroe = j;

@@ -5,6 +5,7 @@ import Game.Combates;
 import Game.Tablero;
 
 // Las piezas de rango 4 a 10 avanzan una casilla en horizontal o vertical.
+// Pieza base con comportamiento estándar del juego.
 public class Normal extends Piezas {
     public Normal(Tablero tablero, int col, int fil, Personaje personaje) throws ImagenNoLocalizadaException {
         super(tablero);

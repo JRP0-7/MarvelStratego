@@ -10,6 +10,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+// Pantalla para ver reportes, historial y estadísticas del juego.
+
+
 public class Reportes extends Fondo {
 
     JFrame marco;
@@ -29,7 +32,7 @@ public class Reportes extends Fondo {
 
         this.setLayout(new BorderLayout());
 
-        JButton botonVolver = new JButton("Volver");
+        JButton botonVolver = new ButtonDesign("Volver");
         botonVolver.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 volverAlSelector();
@@ -89,7 +92,7 @@ public class Reportes extends Fondo {
         Jugador[] jugadores = soloActivos.toArray(new Jugador[0]);
 
         // Ordenamos por puntos de mayor a menor con quicksort (recursivo)
-        ordenarPorPuntos(jugadores, 0, jugadores.length - 1);
+        ordenarPorPuntos(jugadores, jugadores.length );
 
         String[] columnas = { "Posición", "Usuario", "Puntos", "Puntos Heroe", "Puntos Villano" };
         String[][] filas = new String[jugadores.length][5];
@@ -163,39 +166,32 @@ public class Reportes extends Fondo {
 
         JPanel panelCentro = new JPanel(new GridBagLayout());
         panelCentro.setOpaque(false);
-        // panelCentro.add(titulo);
         panelCentro.add(panel);
         return panelCentro;
 
     }
 
-    // Función recursiva que ordena el arreglo de jugadores de mayor a menor
-    // puntaje.
-    private void ordenarPorPuntos(Jugador[] arreglo, int inicio, int fin) {
-        if (inicio >= fin) {
+     // Ordena de mayor a menor puntaje: ordena los primeros n-1 jugadores
+    // de forma recursiva y luego coloca al último en su posición correcta.
+    private void ordenarPorPuntos(Jugador[] arreglo, int n) {
+        // Caso base: con uno o ningún jugador no hay nada que ordenar
+        if (n <= 1) {
             return;
         }
 
-        int pivote = arreglo[fin].getTotalPoints();
-        int i = inicio - 1;
+        // Ordena los primeros n-1 elementos
+        ordenarPorPuntos(arreglo, n - 1);
 
-        for (int j = inicio; j < fin; j++) {
-            if (arreglo[j].getTotalPoints() > pivote) {
-                i = i + 1;
-                Jugador temporal = arreglo[i];
-                arreglo[i] = arreglo[j];
-                arreglo[j] = temporal;
-            }
+        // Inserta el último en su posición dentro de la parte ya ordenada
+        Jugador ultimo = arreglo[n - 1];
+        int j = n - 2;
+
+        // Corre una posición a la derecha a los que tienen MENOS puntos que el último
+        while (j >= 0 && arreglo[j].getTotalPoints() < ultimo.getTotalPoints()) {
+            arreglo[j + 1] = arreglo[j];
+            j--;
         }
-
-        Jugador temporal = arreglo[i + 1];
-        arreglo[i + 1] = arreglo[fin];
-        arreglo[fin] = temporal;
-
-        int posicionPivote = i + 1;
-
-        ordenarPorPuntos(arreglo, inicio, posicionPivote - 1);
-        ordenarPorPuntos(arreglo, posicionPivote + 1, fin);
+        arreglo[j + 1] = ultimo;
     }
 
     private JPanel crearPanelHistorial() {

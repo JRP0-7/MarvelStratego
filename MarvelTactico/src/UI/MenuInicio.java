@@ -12,17 +12,20 @@ import java.awt.event.ActionListener;
 import Usuario.GestorJugadores;
 import Usuario.Jugador;
 
+// Pantalla inicial del juego donde se comienza la experiencia.
+
+
 public class MenuInicio extends Fondo {
 
     GestorJugadores gestor;
 
     JTextField campoUsuario;
-    JPasswordField campoContraseña;
+    JPasswordField campoPassword;
     JLabel labelMensaje;
     JButton btnVerContra;
     private boolean contraVisible = false;
 
-    // Iconos del ojo: cerrado = contraseña oculta, abierto = visible
+    // Iconos del ojo: cerrado = password oculta, abierto = visible
     private ImageIcon ojoCerrado = icono("invisible.png", 20, 20);
     private ImageIcon ojoAbierto = icono("visible.png", 20, 20);
 
@@ -65,42 +68,41 @@ public class MenuInicio extends Fondo {
         campoUsuario.setMaximumSize(new Dimension(300, 50));
         campoUsuario.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel labelContraseña = new JLabel("Contraseña (5 caracteres):");
-        labelContraseña.setForeground(Color.white);
-        labelContraseña.setFont(new Font("Arial", Font.PLAIN, 18));
-        labelContraseña.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JLabel labelPassword = new JLabel("password (5 caracteres):");
+        labelPassword.setForeground(Color.white);
+        labelPassword.setFont(new Font("Arial", Font.PLAIN, 18));
+        labelPassword.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Fila con el campo de contraseña y el botón del ojo al lado
-        JPanel filaContraseña = new JPanel();
-        filaContraseña.setOpaque(false);
-        filaContraseña.setLayout(new BoxLayout(filaContraseña, BoxLayout.X_AXIS));
-        filaContraseña.setAlignmentX(Component.CENTER_ALIGNMENT);
+        // Fila con el campo de password y el botón del ojo al lado
+        JPanel filaPassword = new JPanel();
+        filaPassword.setOpaque(false);
+        filaPassword.setLayout(new BoxLayout(filaPassword, BoxLayout.X_AXIS));
+        filaPassword.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        campoContraseña = new JPasswordField(15);
-        campoContraseña.setMaximumSize(new Dimension(220, 25));
+        campoPassword = new JPasswordField(15);
+        campoPassword.setMaximumSize(new Dimension(220, 25));
 
         btnVerContra = new JButton(ojoCerrado);
         btnVerContra.addActionListener(e -> {
             if (!contraVisible) {
                 contraVisible = !contraVisible;
-                campoContraseña.setEchoChar((char) 0);
+                campoPassword.setEchoChar((char) 0);
                 btnVerContra.setIcon(ojoAbierto);
             } else {
                 contraVisible = !contraVisible;
-                campoContraseña.setEchoChar('•');
+                campoPassword.setEchoChar('•');
                 btnVerContra.setIcon(ojoCerrado);
             }
         });
-        filaContraseña.add(campoContraseña);
-        filaContraseña.add(Box.createRigidArea(new Dimension(5, 0)));
-        filaContraseña.add(btnVerContra);
+        filaPassword.add(campoPassword);
+        filaPassword.add(Box.createRigidArea(new Dimension(5, 0)));
+        filaPassword.add(btnVerContra);
 
         labelMensaje = new JLabel(" ");
-        labelMensaje.setForeground(Color.red);
+        labelMensaje.setForeground(Color.GREEN);
         labelMensaje.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JButton botonIniciarSesion = new JButton("Iniciar sesión");
-        botonIniciarSesion.setFont(new Font("Arial", Font.PLAIN, 18));
+        JButton botonIniciarSesion = new ButtonDesign("Iniciar sesión");
         botonIniciarSesion.setAlignmentX(Component.CENTER_ALIGNMENT);
         botonIniciarSesion.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -108,8 +110,7 @@ public class MenuInicio extends Fondo {
             }
         });
 
-        JButton botonCrearJugador = new JButton("Crear jugador");
-        botonCrearJugador.setFont(new Font("Arial", Font.PLAIN, 18));
+        JButton botonCrearJugador = new ButtonDesign("Crear jugador");
         botonCrearJugador.setAlignmentX(Component.CENTER_ALIGNMENT);
         botonCrearJugador.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -118,8 +119,7 @@ public class MenuInicio extends Fondo {
             }
         });
 
-        JButton botonSalir = new JButton("Salir");
-        botonSalir.setFont(new Font("Arial", Font.PLAIN, 18));
+        JButton botonSalir = new ButtonDesign("Salir");
         botonSalir.setAlignmentX(Component.CENTER_ALIGNMENT);
         botonSalir.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -132,8 +132,8 @@ public class MenuInicio extends Fondo {
         panelCentro.add(labelUsuario);
         panelCentro.add(campoUsuario);
         panelCentro.add(Box.createRigidArea(new Dimension(0, 10)));
-        panelCentro.add(labelContraseña);
-        panelCentro.add(filaContraseña);
+        panelCentro.add(labelPassword);
+        panelCentro.add(filaPassword);
         panelCentro.add(Box.createRigidArea(new Dimension(0, 10)));
         panelCentro.add(labelMensaje);
         panelCentro.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -153,10 +153,10 @@ public class MenuInicio extends Fondo {
     // Función para iniciar sesión dentro del menú de inicio
     private void iniciarSesion() {
         String usuario = campoUsuario.getText().trim();
-        String contraseña = new String(campoContraseña.getPassword()).trim();
+        String password = new String(campoPassword.getPassword()).trim();
 
         try {
-            Jugador jugador = gestor.iniciarSesion(usuario, contraseña);
+            Jugador jugador = gestor.iniciarSesion(usuario, password);
 
             labelMensaje.setText(" ");
             abrirMenuPrincipal(jugador); // se llama a la función de abrir el menú con los datos del jugador
@@ -168,10 +168,10 @@ public class MenuInicio extends Fondo {
     // Función para crear un jugador nuevo dentro del menú de inicio
     private void crearJugador() {
         String usuario = campoUsuario.getText().trim();
-        String contraseña = new String(campoContraseña.getPassword()).trim();
+        String password = new String(campoPassword.getPassword()).trim();
 
         try {
-            String error = gestor.crearJugador(usuario, contraseña);
+            String error = gestor.crearJugador(usuario, password);
 
             if (error != null) {
                 labelMensaje.setText(error);

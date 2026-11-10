@@ -4,9 +4,8 @@ import Game.Tablero;
 import Piezas.Piezas;
 
 //Clase final que se encarga del movimiento de piezas
+// Representa un movimiento válido de una pieza desde una casilla a otra.
 public final class Mover {
-    int aFil;
-    int aCol;
     int nCol;
     int nFil;
 
@@ -14,21 +13,11 @@ public final class Mover {
     Piezas captura;
 
     public Mover(Tablero tablero, Piezas pieza, int nCol, int nFila){
-        this.aCol=pieza.getCol();
-        this.aFil=pieza.getFil();
         this.nCol=nCol;
         this.nFil=nFila; 
 
         this.pieza=pieza;
         this.captura=tablero.getPieza(nCol, nFila);
-    }
-
-    public int getaCol() {
-        return aCol;
-    }
-
-    public int getaFil() {
-        return aFil;
     }
 
     public int getnCol() {

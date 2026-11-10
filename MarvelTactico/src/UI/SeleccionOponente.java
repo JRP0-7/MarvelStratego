@@ -2,6 +2,7 @@ package UI;
 
 import javax.swing.*;
 
+import Game.PanelJuego;
 import Game.Tablero;
 import Usuario.GestorJugadores;
 import Usuario.Jugador;
@@ -10,6 +11,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
+// Pantalla para elegir el rival o modo de enfrentamiento.
+
 
 public class SeleccionOponente extends Fondo {
 
@@ -73,7 +77,7 @@ public class SeleccionOponente extends Fondo {
             panelCentro.add(listaBandos);
             panelCentro.add(Box.createRigidArea(new Dimension(0, 20)));
 
-            JButton botonIniciar = new JButton("Iniciar partida");
+            JButton botonIniciar = new ButtonDesign("Iniciar partida");
             botonIniciar.setAlignmentX(Component.CENTER_ALIGNMENT);
             botonIniciar.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
@@ -84,7 +88,7 @@ public class SeleccionOponente extends Fondo {
             panelCentro.add(Box.createRigidArea(new Dimension(0, 10)));
         }
 
-        JButton botonVolver = new JButton("Volver");
+        JButton botonVolver = new ButtonDesign("Volver");
         botonVolver.setAlignmentX(Component.CENTER_ALIGNMENT);
         botonVolver.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -138,8 +142,13 @@ public class SeleccionOponente extends Fondo {
         vistaTablero.setLayout(new GridBagLayout());
         vistaTablero.add(tablero);
 
+        PanelJuego panelHeroes = new PanelJuego(tablero, true);
+        PanelJuego panelVillanos = new PanelJuego(tablero, false);
+
         panelJuego.add(vistaTablero, BorderLayout.CENTER);
-        panelJuego.add(panelInfo, BorderLayout.EAST);
+        panelJuego.add(panelHeroes, BorderLayout.WEST);
+        panelJuego.add(panelVillanos, BorderLayout.EAST);
+        panelJuego.add(panelInfo, BorderLayout.SOUTH);
 
         marco.getContentPane().removeAll();
         marco.setLayout(new BorderLayout());

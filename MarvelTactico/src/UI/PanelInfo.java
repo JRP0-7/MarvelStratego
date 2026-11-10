@@ -1,20 +1,18 @@
 package UI;
 
 import javax.swing.*;
-import javax.swing.Timer;
 
 import Game.Tablero;
-import Piezas.Piezas;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+
+// Panel auxiliar para mostrar información relevante durante la partida.
 
 
 public class PanelInfo extends JPanel {
 
     Tablero tablero;
-    int anchoIcono = 40;
 
     JButton botonRetirarse;
     JLabel labelTurno;
@@ -22,8 +20,7 @@ public class PanelInfo extends JPanel {
 
     public PanelInfo(Tablero tablero) {
         this.tablero = tablero;
-        this.setPreferredSize(new Dimension(260, tablero.tCasillas * tablero.getFil()));
-        this.setBackground(Color.darkGray);
+        this.setPreferredSize(new Dimension(0, 120));
         this.setLayout(new BorderLayout());
 
         this.add(crearPanelTurno(), BorderLayout.NORTH);
@@ -58,8 +55,10 @@ public class PanelInfo extends JPanel {
         panelTurno.add(labelInstruccion);
 
 
-        botonRetirarse = new JButton("Retirarse");
+        botonRetirarse = new ButtonDesign("Retirarse");
         botonRetirarse.setAlignmentX(Component.CENTER_ALIGNMENT);
+                botonRetirarse.setPreferredSize(new Dimension(160, 26));
+        botonRetirarse.setMaximumSize(new Dimension(160, 26));
         botonRetirarse.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 confirmarRetiro(); // Llamado a la función para rendirse
@@ -67,8 +66,10 @@ public class PanelInfo extends JPanel {
         });
         panelTurno.add(botonRetirarse);
 
-        JButton botonMenu = new JButton("Menú principal");
+        JButton botonMenu = new ButtonDesign("Menú principal");
         botonMenu.setAlignmentX(Component.CENTER_ALIGNMENT);
+        botonMenu.setPreferredSize(new Dimension(160, 26));
+        botonMenu.setMaximumSize(new Dimension(160, 26));
         botonMenu.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 volverAlMenuPrincipal(); // Llamado a la función para volver al menú
@@ -163,102 +164,22 @@ public class PanelInfo extends JPanel {
     }
 
     private void dibujarCapturadasYDatos(Graphics2D g2d) {
-        g2d.setColor(Color.white);
-
-        int y = 20;
-
-        if (tablero.mensajeFinal != null) {
-            y = dibujarTextoConWrap(g2d, tablero.mensajeFinal, y, Color.yellow);
-            y += 20;
-        }
         g2d.setFont(new Font("Arial", Font.PLAIN, 16));
-        g2d.drawString("Capturadas - Heroes", 10, y);
-        y += 10;
-        y = dibujarCapturadas(g2d, tablero.capturadasHeroe, y);
 
-        y += 30;
-        g2d.drawString("Capturadas - Villanos", 10, y);
-        y += 10;
-        y = dibujarCapturadas(g2d, tablero.capturadasVillano, y);
-
-        y += 30;
-        g2d.drawString("Datos de la pieza", 10, y);
-        y += 20;
-        y = dibujarDatos(g2d, y);
-
-        if (tablero.ultimoMensaje != null) {
-            y += 30;
-            g2d.drawString("Ultimo ataque", 10, y);
-            y += 20;
-            dibujarTextoConWrap(g2d, tablero.ultimoMensaje, y, Color.orange);
-        }
-    }
-
-    // Dibuja un texto largo partido en varias lineas para que no se salga
-    // del panel (que es angosto), en el color indicado.
-    private int dibujarTextoConWrap(Graphics2D g2d, String texto, int y, Color color) {
-        g2d.setColor(color);
-
-        String[] palabras = texto.split(" ");
-        String lineaActual = "";
-
-        for (String palabra : palabras) {
-            String pruebaLinea = lineaActual + palabra + " ";
-
-            if (pruebaLinea.length() > 32) {
-                g2d.drawString(lineaActual, 10, y);
-                y += 16;
-                lineaActual = palabra + " ";
-            } else {
-                lineaActual = pruebaLinea;
-            }
+        // Última acción, o el resultado cuando la partida terminó
+        String texto = null;
+        Color color = Color.orange;
+        if (tablero.mensajeFinal != null) {
+            texto = tablero.mensajeFinal;
+            color = Color.yellow;
+        } else if (tablero.ultimoMensaje != null) {
+            texto = "Ultimo ataque: " + tablero.ultimoMensaje;
         }
 
-        if (lineaActual.length() > 0) {
-            g2d.drawString(lineaActual, 10, y);
-            y += 16;
+        if (texto != null) {
+            g2d.setColor(color);
+            FontMetrics fm = g2d.getFontMetrics();
+            g2d.drawString(texto, (getWidth() - fm.stringWidth(texto)) / 2, 16); // centrado
         }
-
-        g2d.setColor(Color.white);
-        return y;
-    }
-
-
-    //Funcion que dibuja las piezas que han sido capturadas
-    private int dibujarCapturadas(Graphics2D g2d, ArrayList<Piezas> lista, int y) {
-        int x = 10;
-
-        for (Piezas p : lista) {
-            if (p.getImagen() != null) {
-                g2d.drawImage(p.getImagen(), x, y, anchoIcono, anchoIcono, null);
-            }
-
-            x += anchoIcono + 5;
-
-            if (x > 260 - anchoIcono) {
-                x = 10;
-                y += anchoIcono + 5;
-            }
-        }
-
-        return y + anchoIcono + 5;
-    }
-
-    public int dibujarDatos(Graphics2D g2d, int y) {
-        Piezas seleccionada = tablero.piezaElegida;
-
-        if (seleccionada == null) {
-            g2d.drawString("Selecciona una pieza", 10, y);
-            return y + 20;
-        }
-
-        g2d.drawString("Nombre: " + seleccionada.getAlias(), 10, y);
-
-        // Las bombas y la tierra no tienen rango (-1 y -2)
-        if (seleccionada.getRango() > 0) {
-            g2d.drawString("Rango: " + seleccionada.getRango(), 10, y + 20);
-        }
-
-        return y + 60;
     }
 }

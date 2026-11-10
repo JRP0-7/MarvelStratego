@@ -9,6 +9,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+// Menú principal que permite navegar entre las opciones del juego.
+
+
 public class MenuPrincipal extends Fondo {
 
     JFrame marco;
@@ -48,8 +51,7 @@ public class MenuPrincipal extends Fondo {
         labelBienvenida.setFont(new Font("Arial", Font.BOLD, 25));
         labelBienvenida.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JButton botonJugar = new JButton("Partida nueva");
-        botonJugar.setFont(new Font("Arial", Font.PLAIN, 18));
+        JButton botonJugar = new ButtonDesign("Partida nueva");
         botonJugar.setAlignmentX(Component.CENTER_ALIGNMENT);
         botonJugar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -57,8 +59,7 @@ public class MenuPrincipal extends Fondo {
             }
         });
 
-        JButton botonMiCuenta = new JButton("Mi cuenta");
-        botonMiCuenta.setFont(new Font("Arial", Font.PLAIN, 18));
+        JButton botonMiCuenta = new ButtonDesign("Mi cuenta");
         botonMiCuenta.setAlignmentX(Component.CENTER_ALIGNMENT);
         botonMiCuenta.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -66,8 +67,7 @@ public class MenuPrincipal extends Fondo {
             }
         });
 
-        JButton botonReportes = new JButton("UNIVERSO MARVEL");
-        botonReportes.setFont(new Font("Arial", Font.PLAIN, 18));
+        JButton botonReportes = new ButtonDesign("UNIVERSO MARVEL");
         botonReportes.setAlignmentX(Component.CENTER_ALIGNMENT);
         botonReportes.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -75,8 +75,7 @@ public class MenuPrincipal extends Fondo {
             }
         });
 
-        JButton botonCerrarSesion = new JButton("Cerrar sesión");
-        botonCerrarSesion.setFont(new Font("Arial", Font.PLAIN, 18));
+        JButton botonCerrarSesion = new ButtonDesign("Cerrar sesión");
         botonCerrarSesion.setAlignmentX(Component.CENTER_ALIGNMENT);
         botonCerrarSesion.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

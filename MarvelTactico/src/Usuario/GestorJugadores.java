@@ -3,6 +3,9 @@ package Usuario;
 import Error.CredencialesInvalidasException;
 import Error.InvalidPasswordException;
 
+// Clase encargada de administrar jugadores, puntuaciones y resultados.
+
+
 public class GestorJugadores implements AlmacenJugadores {
     //Arreglo que maneja la cantidad de jugadores
     private Jugador[] jugadores = new Jugador[100];
@@ -93,14 +96,14 @@ public class GestorJugadores implements AlmacenJugadores {
     }
 
     //Login para los jugadores ya registrados
-    public Jugador iniciarSesion(String usuario, String contraseña) throws CredencialesInvalidasException{
+    public Jugador iniciarSesion(String usuario, String password) throws CredencialesInvalidasException{
         Jugador jugador = buscarPorUsuario(usuario);
 
         if (jugador == null) {
             throw new CredencialesInvalidasException("Usuario o contraseña incorrectos.");
         }
 
-        if (jugador.getPassword().equals(contraseña) && jugador.isActivo()) {
+        if (jugador.getPassword().equals(password) && jugador.isActivo()) {
             return jugador;
         }
 
@@ -108,7 +111,7 @@ public class GestorJugadores implements AlmacenJugadores {
     }
 
     //Creacion del jugador con los campos correspondientes
-    public String crearJugador(String usuario, String contraseña) throws InvalidPasswordException {
+    public String crearJugador(String usuario, String password) throws InvalidPasswordException {
         if (usuario == null || usuario.trim().length() == 0) {
             return "Debes escribir un nombre de usuario.";
         }
@@ -117,27 +120,22 @@ public class GestorJugadores implements AlmacenJugadores {
             return "Ese nombre de usuario ya existe.";
         }
 
-        if (contraseña == null || contraseña.length() != 5) {
+        if (password == null || password.length() != 5) {
             throw new InvalidPasswordException("La contraseña debe tener exactamente 5 caracteres.");
         }
 
-        if (!contraseña.matches("[a-zA-Z0-9]+")) {
-            throw new InvalidPasswordException("La contraseña debe ser solo letras y numeros.");
-        }
-
-        if (!contraseña.matches(".*[a-zA-Z].*")) {
+        if (!password.matches(".*[a-zA-Z].*")) {
             throw new InvalidPasswordException("La contraseña debe tener al menos una letra.");
         }
 
-        Jugador nuevo = new Jugador(usuario, contraseña);
+        if (!password.matches(".*[^a-zA-Z0-9].*")) {
+            throw new InvalidPasswordException("La contraseña debe tener al menos un símbolo.");
+        }
+
+        Jugador nuevo = new Jugador(usuario, password);
         agregarJugador(nuevo);
 
         return null;
     }
 
-    public Jugador[] getJugadores() {
-        return jugadores;
-    }
-
-    
 }

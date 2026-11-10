@@ -5,6 +5,7 @@ import Game.Combates;
 import Game.Tablero;
 
 // Rango 2: se mueve cualquier cantidad de casillas en linea recta, como la torre
+// Subclase especializada para piezas de tipo Místico.
 public final class Mistico extends Piezas {
     public Mistico(Tablero tablero, int col, int fil, Personaje personaje) throws ImagenNoLocalizadaException {
         super(tablero);

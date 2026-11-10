@@ -5,6 +5,7 @@ import java.awt.*;
 
 // Panel base que dibuja una imagen de fondo escalada a todo el tamaño del panel.
 // Las pantallas de menu heredan de esta clase para no repetir el codigo de dibujo.
+// Clase base visual con fondo reutilizable para las pantallas del juego.
 public class Fondo extends JPanel {
 
     private Image fondo;
@@ -39,12 +40,7 @@ public class Fondo extends JPanel {
         }
     }
 
-    // Carga un icono desde resources y lo escala al tamaño indicado (en pixeles).
-    public static ImageIcon icono(String archivo, int size) {
-        Image imagen = new ImageIcon(Fondo.class.getResource("/resources/" + archivo)).getImage();
-        return new ImageIcon(imagen.getScaledInstance(size, size, Image.SCALE_SMOOTH));
-    }
-
+    // Carga un icono desde resources y lo escala al alto y ancho indicados (en pixeles).
     public static ImageIcon icono(String archivo, int alto, int ancho){
         java.net.URL url = Fondo.class.getResource("/resources/" + archivo);
         if(url==null){

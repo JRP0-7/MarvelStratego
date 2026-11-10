@@ -1,8 +1,6 @@
 package UI;
 
 import javax.swing.*;
-import javax.swing.border.SoftBevelBorder;
-
 import Error.InvalidPasswordException;
 import Usuario.GestorJugadores;
 import Usuario.Jugador;
@@ -11,6 +9,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
+
+// Pantalla para consultar y gestionar la cuenta del usuario.
+
 
 public class MiCuenta extends Fondo {
 
@@ -93,8 +94,7 @@ public class MiCuenta extends Fondo {
         labelMensaje.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Botón que abre el historial de partidas del jugador
-        JButton botonHistorial = new JButton("Mis últimos juegos");
-        botonHistorial.setFont(new Font("Arial", Font.PLAIN, 18));
+        JButton botonHistorial = new ButtonDesign("Mis últimos juegos");
         botonHistorial.setAlignmentX(Component.CENTER_ALIGNMENT);
         botonHistorial.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -102,18 +102,7 @@ public class MiCuenta extends Fondo {
             }
         });
 
-        JButton botoncambiarPassword = new JButton("Cambiar contraseña");
-        botoncambiarPassword.setFont(new Font("Arial", Font.PLAIN, 18));
-        botoncambiarPassword.setBackground(Color.decode("#032263"));
-        botoncambiarPassword.setForeground(Color.WHITE);
-        botoncambiarPassword.setBorder(new SoftBevelBorder(
-                SoftBevelBorder.RAISED,
-                Color.WHITE,
-                Color.LIGHT_GRAY,
-                Color.GRAY,
-                Color.DARK_GRAY) {
-
-        });
+        JButton botoncambiarPassword = new ButtonDesign("Cambiar contraseña");
         botoncambiarPassword.setAlignmentX(Component.CENTER_ALIGNMENT);
         botoncambiarPassword.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -126,8 +115,7 @@ public class MiCuenta extends Fondo {
             }
         });
 
-        JButton botonCerrarCuenta = new JButton("Cerrar mi cuenta");
-        botonCerrarCuenta.setFont(new Font("Arial", Font.PLAIN, 18));
+        JButton botonCerrarCuenta = new ButtonDesign("Eliminar mi cuenta");
         botonCerrarCuenta.setAlignmentX(Component.CENTER_ALIGNMENT);
         botonCerrarCuenta.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -135,8 +123,7 @@ public class MiCuenta extends Fondo {
             }
         });
 
-        JButton botonVolver = new JButton("Volver");
-        botonVolver.setFont(new Font("Arial", Font.PLAIN, 18));
+        JButton botonVolver = new ButtonDesign("Volver");
         botonVolver.setAlignmentX(Component.CENTER_ALIGNMENT);
         botonVolver.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -207,7 +194,7 @@ public class MiCuenta extends Fondo {
             throw new InvalidPasswordException("La contraseña debe tener al menos una letra.");
         }
 
-        jugadorActual.setContraseña(nueva);
+        jugadorActual.setPassword(nueva);
         labelMensaje.setForeground(Color.green);
         labelMensaje.setText("Contraseña actualizada.");
     }

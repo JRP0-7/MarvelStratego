@@ -4,6 +4,9 @@ import Error.ImagenNoLocalizadaException;
 import Game.Combates;
 import Game.Tablero;
 
+// Representa una bomba del juego y su efecto sobre el tablero.
+
+
 public final class Bomba extends Piezas{
     public Bomba(Tablero tablero, int col, int fil, boolean esHeroe) throws ImagenNoLocalizadaException {
         super(tablero);

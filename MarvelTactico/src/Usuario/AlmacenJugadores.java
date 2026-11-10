@@ -1,5 +1,8 @@
 package Usuario;
 
+// Interfaz para acceder al almacenamiento y gestión de jugadores.
+
+
 public interface AlmacenJugadores {
     boolean existeUsuario(String usuario);
 
